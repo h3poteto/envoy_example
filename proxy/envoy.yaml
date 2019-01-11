@@ -36,11 +36,6 @@ static_resources:
             - endpoint:
                 address:
                   socket_address:
-                    address: go1
-                    port_value: 9090
-            - endpoint:
-                address:
-                  socket_address:
-                    address: go2
+                    address: go
                     port_value: 9090
 

@@ -1,26 +1,12 @@
 version: "3.0"
 services:
-  go1:
+  go:
     image: h3poteto/golang:1.11.2
-    working_dir: /go/src/github.com/h3poteto/envoy_example/backend
+    working_dir: /go/src/github.com/h3poteto/envoy_example/backend/http
     environment:
       PORT: 9090
-      NUMBER: 1
     volumes:
-      - ./backend:/go/src/github.com/h3poteto/envoy_example/backend
-    entrypoint: sh -c
-    command: |
-      "dep ensure && \
-      go run main.go"
-
-  go2:
-    image: h3poteto/golang:1.11.2
-    working_dir: /go/src/github.com/h3poteto/envoy_example/backend
-    environment:
-      PORT: 9090
-      NUMBER: 2
-    volumes:
-      - ./backend:/go/src/github.com/h3poteto/envoy_example/backend
+      - ./backend/http:/go/src/github.com/h3poteto/envoy_example/backend/http
     entrypoint: sh -c
     command: |
       "dep ensure && \
@@ -29,8 +15,7 @@ services:
   envoy:
     image: envoyproxy/envoy:latest
     links:
-      - go1:go1
-      - go2:go2
+      - go:go
     volumes:
       - ./proxy/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
