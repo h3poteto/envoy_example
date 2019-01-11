@@ -1,0 +1,10 @@
+version: "3.0"
+services:
+  go:
+    image: h3poteto/golang:1.11.2
+    working_dir: /go/src/github.com/h3poteto/envoy_example/backend
+    environment:
+      PORT: 9090
+    volumes:
+      - ./backend:/go/src/github.com/h3poteto/envoy_example/backend
+
