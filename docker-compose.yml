@@ -7,4 +7,17 @@ services:
       PORT: 9090
     volumes:
       - ./backend:/go/src/github.com/h3poteto/envoy_example/backend
+    entrypoint: sh -c
+    command: |
+      "dep ensure && \
+      go run main.go"
 
+  envoy:
+    image: envoyproxy/envoy:latest
+    links:
+      - go:go
+    volumes:
+      - ./proxy/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "9901:9901"
+      - "10000:10000"
