@@ -28,8 +28,9 @@ services:
     image: envoyproxy/envoy:latest
     links:
       - http:http
+      - grpc:grpc
     volumes:
       - ./proxy/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
-      - "9901:9901"
+      - "12000:12000"
       - "10000:10000"
