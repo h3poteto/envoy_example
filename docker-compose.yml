@@ -12,6 +12,18 @@ services:
       "dep ensure && \
       go run main.go"
 
+  http_sub:
+    image: h3poteto/golang:1.11.2
+    working_dir: /go/src/github.com/h3poteto/envoy_example/backend/http_sub
+    environment:
+      PORT: 9090
+    volumes:
+      - ./backend/http_sub:/go/src/github.com/h3poteto/envoy_example/backend/http_sub
+    entrypoint: sh -c
+    command: |
+      "dep ensure && \
+      go run main.go"
+
   grpc:
     image: h3poteto/grpc-go:1.11.4
     working_dir: /go/src/github.com/h3poteto/envoy_example/backend/grpc
@@ -28,9 +40,11 @@ services:
     image: envoyproxy/envoy:latest
     links:
       - http:http
+      - http_sub:http_sub
       - grpc:grpc
     volumes:
       - ./proxy/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "12000:12000"
       - "10000:10000"
+      - "9901:9901"
