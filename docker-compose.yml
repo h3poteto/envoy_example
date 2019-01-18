@@ -1,6 +1,6 @@
 version: "3.0"
 services:
-  go:
+  http:
     image: h3poteto/golang:1.11.2
     working_dir: /go/src/github.com/h3poteto/envoy_example/backend/http
     environment:
@@ -12,10 +12,22 @@ services:
       "dep ensure && \
       go run main.go"
 
+  grpc:
+    image: h3poteto/grpc-go:1.11.4
+    working_dir: /go/src/github.com/h3poteto/envoy_example/backend/grpc
+    environment:
+      PORT: 9091
+    volumes:
+      - .:/go/src/github.com/h3poteto/envoy_example/
+    entrypoint: sh -c
+    command: |
+      "dep ensure && \
+      go run main.go"
+
   envoy:
     image: envoyproxy/envoy:latest
     links:
-      - go:go
+      - http:http
     volumes:
       - ./proxy/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
